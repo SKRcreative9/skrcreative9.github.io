@@ -1,11 +1,18 @@
-
 :root {
+  /* GŁÓWNA KOLORYSTYKA STRONY */
   --bg: #111110;
   --panel: #191918;
   --text: #eeeae2;
   --muted: #999990;
   --accent: #c7ff5e;
   --line: #343430;
+
+  /* KOLORYSTYKA SEKCJI "O MNIE" */
+  --about-bg: #dce8c8;
+  --about-text: #171914;
+  --about-muted: #52584a;
+  --about-accent: #526443;
+  --about-eyebrow: #59634d;
 }
 
 * {
@@ -22,6 +29,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
 
 a {
@@ -96,9 +104,9 @@ nav a:hover {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, #111110 5%, #111110d9 38%, #11111035 100%),
-    linear-gradient(0deg, #111110 0%, transparent 40%),
-    url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=85")
+    linear-gradient(90deg, var(--bg) 5%, #111110d9 38%, #11111035 100%),
+    linear-gradient(0deg, var(--bg) 0%, transparent 40%),
+    url("https://scontent-waw2-2.xx.fbcdn.net/v/t39.30808-6/537130702_4088451334701780_8049950772951731400_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=BvJz5b0ZGIoQ7kNvwEsMD2l&_nc_oc=AdojoHccg_c1sSplnAhzdZV3gFUaq6ZG04WPppof3lijALayIb3VecVt0zR6GZZvR_Q&_nc_zt=23&_nc_ht=scontent-waw2-2.xx&_nc_gid=eP5Y2khIqh7TO80SnrsZ5Q&_nc_ss=7b2a8&oh=00_AQPF6vdxaviI0a7_BP_rw9WK3zYUW7CRkATm0qe8-XsMhA&oe=6AD94AE3")
     center / cover;
   filter: saturate(.65);
   animation: reveal 1.2s ease-out;
@@ -189,7 +197,7 @@ h2 span {
   position: relative;
   overflow: hidden;
   background: var(--panel);
-  cursor: zoom-in;
+  cursor: pointer;
 }
 
 .project img {
@@ -271,27 +279,72 @@ h2 span {
   margin: 0;
 }
 
+/* SEKCJA O MNIE + WYSUWANE ZDJĘCIE */
 .about {
-  background: #dce8c8;
-  color: #171914;
+  background: var(--about-bg);
+  color: var(--about-text);
   padding: 90px 7%;
+  overflow: hidden;
+}
+
+.about-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
 }
 
 .about .eyebrow {
-  color: #59634d;
+  color: var(--about-eyebrow);
 }
 
 .about h2 em {
-  color: #526443;
+  color: var(--about-accent);
 }
 
-.about > p:last-child {
+.about-lead {
   max-width: 540px;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.9;
-  color: #52584a;
+  color: var(--about-muted);
+  margin-bottom: 30px;
 }
 
+.about-bio {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  padding-top: 24px;
+  max-width: 540px;
+}
+
+.about-bio h3 {
+  font-size: 20px;
+  margin: 0 0 10px;
+  letter-spacing: -0.5px;
+}
+
+.about-bio p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--about-muted);
+  margin: 0;
+}
+
+.about-image-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.about-profile-img {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: #c5d3b0;
+  will-change: transform, opacity;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease-out;
+}
+
+/* KONTAKT */
 .contact {
   padding-top: 110px;
   padding-bottom: 110px;
@@ -306,13 +359,27 @@ h2 span {
   font-size: 13px;
 }
 
-.email {
-  display: inline-block;
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
   margin-top: 20px;
+}
+
+.email,
+.phone {
+  display: inline-block;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--accent);
   font-size: clamp(18px, 3vw, 28px);
   overflow-wrap: anywhere;
+  transition: color .2s;
+}
+
+.email:hover,
+.phone:hover {
+  color: var(--accent);
 }
 
 footer {
@@ -331,6 +398,86 @@ footer p {
   letter-spacing: 1px;
 }
 
+/* MODAL GALERII (KOLAŻ) */
+#gallery-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: none;
+  flex-direction: column;
+  background: #0d0d0cf8;
+  backdrop-filter: blur(10px);
+}
+
+#gallery-modal.open {
+  display: flex;
+}
+
+.gallery-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 6%;
+  border-bottom: 1px solid var(--line);
+}
+
+#close-gallery {
+  background: none;
+  border: 0;
+  color: var(--text);
+  font-size: 40px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.gallery-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 6% 60px;
+}
+
+.collage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-auto-rows: 220px;
+  grid-auto-flow: dense;
+  gap: 12px;
+}
+
+.collage-item {
+  overflow: hidden;
+  background: var(--panel);
+  cursor: zoom-in;
+  position: relative;
+}
+
+/* Zróżnicowane kafelki tworzące efekt dopasowanego kolażu */
+.collage-item:nth-child(6n + 1) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.collage-item:nth-child(6n + 4) {
+  grid-column: span 2;
+}
+
+.collage-item:nth-child(6n + 5) {
+  grid-row: span 2;
+}
+
+.collage-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease, filter .4s ease;
+}
+
+.collage-item:hover img {
+  transform: scale(1.04);
+}
+
+/* LIGHTBOX (POWIĘKSZENIE POJEDYNCZEGO ZDJĘCIA) */
 #lightbox {
   position: fixed;
   inset: 0;
@@ -339,7 +486,7 @@ footer p {
   align-items: center;
   justify-content: center;
   padding: 5%;
-  background: #080807f5;
+  background: #080807f8;
 }
 
 #lightbox.open {
@@ -348,7 +495,7 @@ footer p {
 
 #lightbox img {
   max-width: 100%;
-  max-height: 85vh;
+  max-height: 88vh;
   object-fit: contain;
 }
 
@@ -412,14 +559,6 @@ footer p {
     padding: 7% 6%;
   }
 
-  .hero-image {
-    background:
-      linear-gradient(90deg, #111110eF, #11111075),
-      linear-gradient(0deg, #111110, transparent),
-      url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1000&q=80")
-      center / cover;
-  }
-
   h1 {
     font-size: clamp(48px, 11vw, 72px);
     letter-spacing: -3px;
@@ -461,6 +600,27 @@ footer p {
 
   .about {
     padding: 70px 6%;
+  }
+
+  .about-container {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .about-image-wrapper {
+    justify-content: center;
+  }
+
+  /* Dopasowanie kolażu na telefonach */
+  .collage-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 150px;
+    gap: 8px;
+  }
+
+  .collage-item:nth-child(6n + 1),
+  .collage-item:nth-child(6n + 4) {
+    grid-column: span 2;
   }
 
   footer {
