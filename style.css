@@ -47,8 +47,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #111110ed;
-  backdrop-filter: blur(12px);
+  background: #111110f7;
 }
 
 .logo {
@@ -205,13 +204,13 @@ h2 span {
   height: 100%;
   display: block;
   object-fit: cover;
-  filter: saturate(.7) brightness(.8);
-  transition: transform .5s, filter .5s;
+  opacity: 0.82;
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .project:hover img {
   transform: scale(1.04);
-  filter: brightness(.65);
+  opacity: 0.65;
 }
 
 .project figcaption {
@@ -405,8 +404,7 @@ footer p {
   z-index: 90;
   display: none;
   flex-direction: column;
-  background: #0d0d0cf8;
-  backdrop-filter: blur(10px);
+  background: #0d0d0cfa;
 }
 
 #gallery-modal.open {
@@ -434,21 +432,28 @@ footer p {
   flex: 1;
   overflow-y: auto;
   padding: 30px 6% 60px;
+  overscroll-behavior: contain;
 }
 
 .collage-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  grid-auto-rows: 220px;
-  grid-auto-flow: dense;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 .collage-item {
-  overflow: hidden;
+  width: 100%;
   background: var(--panel);
   cursor: zoom-in;
-  position: relative;
+}
+
+.collage-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: translateZ(0);
 }
 
 /* Zróżnicowane kafelki tworzące efekt dopasowanego kolażu */

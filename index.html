@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SKR Creative — fotografia, film i produkcja wizualna.">
-  <title>SKR Creative — Photo & Video</title> <!-- nazwa strony -->
+  <title>SKR Creative — Photo & Video</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
 
-<header class="header"> <!-- nagłówek strony -->
+<header class="header">
   <a class="logo" href="#home">SKR<span>CREATIVE</span></a>
 
   <button id="menu-button" aria-label="Otwórz menu" aria-expanded="false">☰</button>
@@ -24,7 +24,7 @@
 </header>
 
 <main>
-  <section class="hero" id="home"> <!-- ekran powitalny na stronie, zdjęcie ustawia się w script.js w sekcji hero-image -->
+  <section class="hero" id="home">
     <div class="hero-image"></div>
     <div class="hero-content">
       <p class="eyebrow">INDEPENDENT VISUAL PRODUCTION</p>
@@ -42,28 +42,24 @@
     <p class="eyebrow">WYBRANE REALIZACJE</p>
     <h2>Prace, nie obietnice<span>.</span></h2>
 
-    <div class="gallery"> <!-- panel galerii nazwy folderów muszą odpowiadać nazwom w script.js -->
+    <div class="gallery">
       <figure class="project" data-category="gallery1" data-title="01 / Wiosna">
-        <img src="photos/gallery1/1.jpg"
-             alt="Ujęcia wiosny" loading="lazy">
+        <img src="photos/gallery1/1.webp" alt="Ujęcia wiosny" decoding="async">
         <figcaption>01 / Wiosna<br><strong>Energia chwili</strong></figcaption>
       </figure>
 
-      <figure class="project" data-category="gallery2" data-title="02 / Ogród">
-        <img src="photos/gallery2/1.jpg"
-             alt="Kadry z ogródka" loading="lazy">
+      <figure class="project" data-category="gallery2" data-title="02 / Ogrody">
+        <img src="photos/gallery2/1.webp" alt="Kadry z ogródka" decoding="async">
         <figcaption>02 / Ogrody<br><strong>Ujęcia z ogrodu</strong></figcaption>
       </figure>
 
-      <figure class="project" data-category="portrait" data-title="03 / PORTRAIT — Charakter w kadrze">
-        <img src="photos/portrait/cover.jpg"
-             alt="Portret fotograficzny" loading="lazy">
+      <figure class="project" data-category="gallery3" data-title="03 / PORTRAIT — Charakter w kadrze">
+        <img src="photos/gallery3/1.webp" alt="Portret fotograficzny" decoding="async">
         <figcaption>03 / PORTRAIT<br><strong>Charakter w kadrze</strong></figcaption>
       </figure>
 
-      <figure class="project" data-category="plener" data-title="04 / PLENER — Nowa perspektywa">
-        <img src="photos/plener/cover.jpg"
-             alt="Fotografia plenerowa" loading="lazy">
+      <figure class="project" data-category="gallery4" data-title="04 / PLENER — Nowa perspektywa">
+        <img src="photos/gallery4/1.webp" alt="Fotografia plenerowa" decoding="async">
         <figcaption>04 / PLENER<br><strong>Nowa perspektywa</strong></figcaption>
       </figure>
     </div>
@@ -100,8 +96,8 @@
         </div>
       </div>
 
-      <div class="about-image-wrapper"> <!-- link do zdjęcia, można umieścić w folderze about/ -->
-        <img src="https://scontent-waw2-1.xx.fbcdn.net/v/t39.30808-6/558093719_4151943941685852_1001026028162692738_n.jpg?stp=dst-jpg_tt6&cstp=mx1134x1148&ctp=s1134x1148&_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Mz0F_6b3doMQ7kNvwEwJb2y&_nc_oc=AdpYgww0IMddlNVHSw0449tQFtTWCMlnciil02P5iXBket8-AwLrWnhaJe3cE9d_neU&_nc_zt=23&_nc_ht=scontent-waw2-1.xx&_nc_gid=jo05Ux2Viqtrsx9KMYqc4A&_nc_ss=7b2a8&oh=00_AQNHAQ2jNYhwbGIWQPkLiIxlkarZyePgGRPq0c96nj9gyA&oe=6AD94DEC" alt="Zdjęcie profilowe" class="about-profile-img" loading="lazy">
+      <div class="about-image-wrapper">
+        <img src="https://scontent-waw2-1.xx.fbcdn.net/v/t39.30808-6/558093719_4151943941685852_1001026028162692738_n.jpg?stp=dst-jpg_tt6&cstp=mx1134x1148&ctp=s1134x1148&_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Mz0F_6b3doMQ7kNvwEwJb2y&_nc_oc=AdpYgww0IMddlNVHSw0449tQFtTWCMlnciil02P5iXBket8-AwLrWnhaJe3cE9d_neU&_nc_zt=23&_nc_ht=scontent-waw2-1.xx&_nc_gid=jo05Ux2Viqtrsx9KMYqc4A&_nc_ss=7b2a8&oh=00_AQNHAQ2jNYhwbGIWQPkLiIxlkarZyePgGRPq0c96nj9gyA&oe=6AD94DEC" alt="Zdjęcie profilowe" class="about-profile-img" loading="lazy" decoding="async">
       </div>
     </div>
   </section>
@@ -127,7 +123,6 @@
   <p>© <span id="year"></span> SKR CREATIVE</p>
 </footer>
 
-<!-- Modal z galerią tematyczną (kolaż) -->
 <div id="gallery-modal" aria-hidden="true">
   <div class="gallery-modal-header">
     <span id="gallery-modal-title" class="eyebrow">GALERIA</span>
@@ -138,10 +133,9 @@
   </div>
 </div>
 
-<!-- Lightbox do powiększania pojedynczego zdjęcia z kolażu -->
 <div id="lightbox" aria-hidden="true">
   <button id="close-lightbox" aria-label="Zamknij powiększenie">×</button>
-  <img src="" alt="">
+  <img src="" alt="" decoding="async">
 </div>
 
 </body>

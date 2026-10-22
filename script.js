@@ -1,35 +1,19 @@
-// ============================================================================
-// KONFIGURACJA STRUKTURY KATALOGOWEJ ZDJĘĆ
-// Zdjęcia umieszczaj w folderach: photos/<nazwa_kategorii>/<plik.jpg>
-// ============================================================================
 const GALLERY_FOLDERS = {
   gallery1: [
-    "1.jpg",
-    "2.jpg"
+    "1", "2", "3", "4", "5", "6", "7"
   ],
   gallery2: [
-    "1.jpg",
-    "2.jpg",
-    "3.jpg"
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+    "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"
   ],
-  portrait: [
-    "1.jpg",
-    "2.jpg",
-    "3.jpg",
-    "4.jpg",
-    "5.jpg"
+  gallery3: [
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
   ],
-  plener: [
-    "1.jpg",
-    "2.jpg",
-    "3.jpg",
-    "4.jpg"
+  gallery4: [
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
   ]
 };
 
-// ============================================================================
-// MENU MOBILNE
-// ============================================================================
 const menuButton = document.querySelector("#menu-button");
 const menu = document.querySelector("#menu");
 
@@ -47,11 +31,9 @@ menu.querySelectorAll("a").forEach(link => {
   });
 });
 
-// ============================================================================
-// GALERIA KOLAŻOWA ORAZ POWIĘKSZANIE ZDJĘĆ (LIGHTBOX)
-// ============================================================================
 const galleryModal = document.querySelector("#gallery-modal");
 const galleryModalTitle = document.querySelector("#gallery-modal-title");
+const galleryModalBody = document.querySelector(".gallery-modal-body");
 const collageGrid = document.querySelector("#collage-grid");
 const closeGalleryBtn = document.querySelector("#close-gallery");
 
@@ -59,36 +41,53 @@ const lightbox = document.querySelector("#lightbox");
 const lightboxImage = lightbox.querySelector("img");
 const closeLightboxBtn = document.querySelector("#close-lightbox");
 
-// Otwieranie kolażu po kliknięciu w główny kafelek projektu
 document.querySelectorAll(".project").forEach(project => {
+  const category = project.dataset.category;
+  const files = GALLERY_FOLDERS[category] || [];
+  const coverImg = project.querySelector("img");
+
+  if (coverImg && files.length > 0) {
+    // Domyślne zdjęcie okładkowe to pierwszy element z tablicy (indeks 0). Aby ustawić inne, zmień files[0] np. na files[2] lub wpisz nazwę pliku na sztywno.
+    coverImg.src = `photos/${category}/${files[0]}.webp`;
+    // Wymuszenie dekodowania w tle
+    if (coverImg.decode) {
+      coverImg.decode().catch(() => {});
+    }
+  }
+
   project.addEventListener("click", () => {
-    const category = project.dataset.category;
     const title = project.dataset.title || category.toUpperCase();
-    const files = GALLERY_FOLDERS[category] || [];
 
     galleryModalTitle.textContent = title;
     collageGrid.innerHTML = "";
 
-    files.forEach((fileName, index) => {
+    const fragment = document.createDocumentFragment();
+
+    files.forEach((fileBaseName, index) => {
       const item = document.createElement("div");
       item.className = "collage-item";
 
       const img = document.createElement("img");
-      img.src = `photos/${category}/${fileName}`;
+      img.src = `photos/${category}/${fileBaseName}.webp`;
       img.alt = `${title} - zdjęcie ${index + 1}`;
-      img.loading = "lazy";
+      img.decoding = "async";
 
-      // Kliknięcie w kafelek w kolażu otwiera zdjęcie na pełnym ekranie
+      if (img.decode) {
+        img.decode().catch(() => {});
+      }
+
       item.addEventListener("click", () => {
-        openLightbox(img.src, img.alt);
+        openLightbox(`photos/${category}/${fileBaseName}.jpg`, img.alt);
       });
 
       item.appendChild(img);
-      collageGrid.appendChild(item);
+      fragment.appendChild(item);
     });
 
+    collageGrid.appendChild(fragment);
     galleryModal.classList.add("open");
     galleryModal.setAttribute("aria-hidden", "false");
+    galleryModalBody.scrollTop = 0;
     document.body.style.overflow = "hidden";
   });
 });
@@ -121,7 +120,9 @@ lightbox.addEventListener("click", event => {
 });
 
 galleryModal.addEventListener("click", event => {
-  if (event.target === galleryModal) closeGalleryModal();
+  if (event.target === galleryModal || event.target === galleryModalBody) {
+    closeGalleryModal();
+  }
 });
 
 document.addEventListener("keydown", event => {
@@ -134,9 +135,6 @@ document.addEventListener("keydown", event => {
   }
 });
 
-// ============================================================================
-// PRZESUWANIE ZDJĘCIA PROFILOWEGO ZALEŻNIE OD SCROLLA (Z ZATRZYMANIEM)
-// ============================================================================
 const aboutSection = document.querySelector("#about");
 const profileImg = document.querySelector(".about-profile-img");
 
@@ -146,15 +144,13 @@ if (aboutSection && profileImg) {
     const windowHeight = window.innerHeight;
     const sectionCenter = rect.top + rect.height / 2;
 
-    // --- PARAMETRY DO REGULACJI ŁAGODNOŚCI ---
-    const maxOffset = 45;                        // Jak daleko w prawo ucieka zdjęcie w % (było 120 - zmniejszenie najbardziej uspokaja ruch)
-    const holdZoneBottom = windowHeight * 0.65;  // Dolna granica zatrzymania
-    const holdZoneTop = windowHeight * 0.35;     // Górna granica zatrzymania
-    const enterStart = windowHeight * 1.45;      // Im WIĘKSZA liczba (np. 1.5), tym wolniej zdjęcie wjeżdża (było 1.15)
-    const exitEnd = -windowHeight * 0.45;        // Im MNIEJSZA liczba (np. -0.5), tym wolniej zdjęcie wyjeżdża (było -0.15)
-    // -----------------------------------------
+    const maxOffset = 45;
+    const holdZoneBottom = windowHeight * 0.65;
+    const holdZoneTop = windowHeight * 0.35;
+    const enterStart = windowHeight * 1.45;
+    const exitEnd = -windowHeight * 0.45;
 
-    let progress = 0; // 0 = na miejscu, 1 = schowane
+    let progress = 0;
 
     if (sectionCenter > holdZoneBottom) {
       progress = (sectionCenter - holdZoneBottom) / (enterStart - holdZoneBottom);
@@ -162,10 +158,8 @@ if (aboutSection && profileImg) {
       progress = (holdZoneTop - sectionCenter) / (holdZoneTop - exitEnd);
     }
 
-    // Ograniczenie wartości do przedziału 0 - 1
     progress = Math.min(1, Math.max(0, progress));
 
-    // Zastosowanie krzywej łagodzącej (ease-out), żeby zdjęcie miękko hamowało przed zatrzymaniem
     const smoothProgress = Math.pow(progress, 1.35);
 
     const offsetPercent = smoothProgress * maxOffset;
@@ -190,7 +184,4 @@ if (aboutSection && profileImg) {
   updateProfileImagePosition();
 }
 
-// ============================================================================
-// AKTUALNY ROK W STOPCE
-// ============================================================================
 document.querySelector("#year").textContent = new Date().getFullYear();
